@@ -1,0 +1,49 @@
+swagger:
+  production: true
+  basic:
+    enable: true
+    username: admin
+    password: admin
+
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  #tomcat启动的端口
+  port: 8081
+  connection-timeout: 5000
+  servlet:
+    #tomcat访问路径，类似tomcat/webapps下的项目名称
+    context-path: /keelin
+spring:
+  profiles:
+    # 运行环境 dev|test|prod,根据active动态加载application-active.yml配置文件
+    active: dev
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: /**
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+  resources:
+    add-mappings: false
+  main:
+      allow-bean-definition-overriding: true
+
+logging:
+  config: classpath:logback-spring.xml
+  
+     
+
+     
