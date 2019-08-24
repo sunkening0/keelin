@@ -1,11 +1,35 @@
+   
 spring:
   redis:
-    host: localhost
+## 单机
+    host: 127.0.0.1
     port: 6379
+##
+## 集群
+#    cluster:
+#      nodes:
+#       - 192.168.172.128:6380
+#       - 192.168.172.128:6381
+#       - 192.168.172.128:6382
+### 哨兵
+#    sentinel:
+#      master: mymaster
+#      nodes:
+#        - 192.168.172.128:26001
+#        - 192.168.172.128:26002
+##
     jedis:
       pool:
-        max-idle: 8
-        min-idle: 0
-        max-active: 8
+### 连接池最大连接数（使用负值表示没有限制） 
+        max-active: 9
+### 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1
-    timeout: 0
+### 连接池中的最大空闲连接 
+        max-idle: 9
+### 连接池中的最小空闲连接 
+        min-idle: 0
+### Redis数据库索引(默认为0) 
+    database: 0
+### 连接超时时间（毫秒） 
+    timeout: 60000
+    

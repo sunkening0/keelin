@@ -33,6 +33,7 @@ public class UserController {
 
 		Subject subject = SecurityUtils.getSubject();
 		try {
+			//subject.getSession().setTimeout(180000000);
 			subject.login(token);
 		} catch (IncorrectCredentialsException ice) {
 			return BackAdminResult.build(1, "密码错误");

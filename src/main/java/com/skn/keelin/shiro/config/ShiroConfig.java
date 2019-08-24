@@ -17,18 +17,20 @@ import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
+import com.skn.keelin.shiro.config.redis.RedisSessionDAO;
+import com.skn.keelin.shiro.config.redis.ShiroRedisCache;
+import com.skn.keelin.shiro.config.redis.ShiroRedisCacheManager;
 import com.skn.keelin.shiro.oauth2.realms.PhoneRealm;
 import com.skn.keelin.shiro.oauth2.realms.UserRealm;
 
@@ -113,7 +115,7 @@ public class ShiroConfig {
 	      CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();  
 	      cookieRememberMeManager.setCookie(rememberMeCookie());  
 	      //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)  
-	      //cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));  
+	      cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));  
 	      return cookieRememberMeManager;  
 	}  
 
@@ -123,7 +125,7 @@ public class ShiroConfig {
      *
      * @return
      */
-    public RedisManager redisManager() {
+    /*public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(Integer.parseInt(port));
@@ -132,50 +134,56 @@ public class ShiroConfig {
         return redisManager;
     }
 	
-    /**
+    *//**
      * cacheManager 
      *
      * @return
-     */
+     *//*
     public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
     }
 
-    /**
+    *//**
      * redisSessionDAO
-     */
+     *//*
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
         return redisSessionDAO;
-    }
+    }*/
 
     /**
      * sessionManager
      */
-    public DefaultWebSessionManager sessionManager() {
+	private DefaultWebSessionManager sessionManager(RedisTemplate template) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO());
+        sessionManager.setSessionDAO(new RedisSessionDAO(template));
+     // 设置session超时时间，单位为毫秒
+        sessionManager.setGlobalSessionTimeout(100000);
+        sessionManager.setSessionIdCookie(new SimpleCookie("sid"));
         return sessionManager;
     }
     
-
+	private ShiroRedisCacheManager cacheManager(RedisTemplate template){
+        return new ShiroRedisCacheManager(template);
+    }
 	
 	@Bean
 	public SecurityManager securityManager(UserRealm userRealm, PhoneRealm phoneRealm,
-			AbstractAuthenticator abstractAuthenticator) {
+			AbstractAuthenticator abstractAuthenticator,RedisTemplate<String, Object> redisTemplate) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 设置realms
 		List<Realm> realms = new ArrayList<Realm>();
 		realms.add(userRealm);
 		realms.add(phoneRealm);
 		securityManager.setRealms(realms);
+		new EnterpriseCacheSessionDAO();
 		// 自定义缓存实现，可以使用redis
-		securityManager.setCacheManager(cacheManager());
+		securityManager.setCacheManager(cacheManager(redisTemplate));
 		// 自定义session管理，可以使用redis
-		securityManager.setSessionManager(sessionManager());
+		securityManager.setSessionManager(sessionManager(redisTemplate));
 		// 注入记住我管理器
 		securityManager.setRememberMeManager(rememberMeManager());
 		// 认证器
@@ -247,7 +255,7 @@ public class ShiroConfig {
         filterMap.put("/ws/**", "anon");
         // 静态资源
         filterMap.put("/static/**", "anon");
-        filterMap.put("/user/dologin", "authc");
+        filterMap.put("/user/dologin", "anon");
         
         filterMap.put("/user/plogin", "anon");
         
