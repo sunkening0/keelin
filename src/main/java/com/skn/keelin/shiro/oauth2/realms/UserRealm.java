@@ -1,11 +1,14 @@
 package com.skn.keelin.shiro.oauth2.realms;
 
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -64,6 +67,21 @@ public class UserRealm extends AuthorizingRealm {
     // 授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    	//因为当有多个realm的时候就会产生多个principal（身份信息），
+    	//此处最需要注意的是getPrimaryPrincipal，如果只有一个Principal那么直接返回即可，
+    	//如果有多个Principal，则返回第一个（因为内部使用Map存储，所以可以认为是返回任意一个）；
+    	//也可以通过PrincipalCollection接口的其他方法如：oneByType / byType根据凭据的类型返回相应的Principal；fromRealm根据Realm名字（每个Principal都与一个Realm关联）获取相应的Principal
+    	
+    	/*SysUserEntity user = (SysUserEntity) principals.getPrimaryPrincipal();
+        Long userId = user.getUserId();
+
+        //获取用户权限列表  （先从redis中取   取不到在查数据库   然后将数据更新到redis）
+        Set<String> permsSet = shiroService.getUserPermissions(userId);
+
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setStringPermissions(permsSet);
+        return info;*/
+    	
         return null;
     }
     

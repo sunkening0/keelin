@@ -29,6 +29,7 @@ public class UserController {
 	public BackAdminResult dologin(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("rememberMe") boolean rememberMe,
 			HttpSession session) throws AuthenticationException {
 
+		//rememberMe 记住我
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password,rememberMe);
 
 		Subject subject = SecurityUtils.getSubject();

@@ -9,6 +9,14 @@ import com.skn.keelin.redis.RedisUtil;
 
 import io.netty.util.internal.ObjectUtil;
 
+/**
+ * 使用Redis作为缓存需要shiro重写cache、cacheManager、SessionDAO
+* 类名称：ShiroRedisCacheManager   
+* 类描述：   
+* 创建人：skn   
+* 创建时间：2019年8月26日 上午10:43:14   
+* @version
+ */
 public class ShiroRedisCacheManager extends AbstractCacheManager {
 
     private RedisTemplate redisTemplate;
