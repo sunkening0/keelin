@@ -12,7 +12,7 @@ server:
     max-threads: 1000
     min-spare-threads: 30
   #tomcat启动的端口
-  port: 8081
+  port: 8082
   connection-timeout: 5000
   servlet:
     #tomcat访问路径，类似tomcat/webapps下的项目名称
@@ -20,7 +20,7 @@ server:
 spring:
   profiles:
     # 运行环境 dev|test|prod,根据active动态加载application-active.yml配置文件
-    active: dev
+    active: dev,quartz
   # jackson时间格式化
   jackson:
     time-zone: GMT+8
