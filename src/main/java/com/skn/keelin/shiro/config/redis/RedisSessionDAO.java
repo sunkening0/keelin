@@ -13,6 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+* 类名称：RedisSessionDAO   
+* 类描述：   
+* 创建人：skn   
+* 创建时间：2019年8月26日 上午10:27:39   
+* @version
+ */
 public class RedisSessionDAO extends AbstractSessionDAO{
 	
 	private static Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
