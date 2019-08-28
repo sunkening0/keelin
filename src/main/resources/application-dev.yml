@@ -64,10 +64,38 @@ spring:
       #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
-      
   
-
-
+  #rabbitMQ
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    template:
+      # 使用return-callback时必须设置mandatory为true
+      mandatory: true
+    # 消息发送到交换机确认机制,是否确认回调
+    publisher-confirms: true
+    # 消息发送到交换机确认机制，是否返回回调
+    publisher-returns: true
+    listener:
+      simple:
+        # 并发消费者初始化值
+        concurrency: 5
+        # 最大值
+        max-concurrency: 10
+        # 每个消费者每次监听时可拉取处理的消息数量
+        prefetch: 20
+        # 确认模式设置为手动签收
+        acknowledge-mode: manual
+        # 消费失败重试
+        retry:
+          enabled: true
+          max-attempts: 5  # 重试次数
+          initial-interval: 2000
+        default-requeue-rejected: false  #这个字段一定要设置成 false 不然无法消费的数据不会进入死信队列的
+    
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

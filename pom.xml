@@ -102,6 +102,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
+		
+		<!-- rabbitmq -->
+		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-amqp</artifactId>
+    	</dependency>
+    	
+    	<dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.49</version>
+        </dependency>
 
 
 		<!-- shiro+redis缓存插件 (也可以实现分布式功能 Redis集群使用RedisClusterManager，单个Redis使用RedisManager) -->

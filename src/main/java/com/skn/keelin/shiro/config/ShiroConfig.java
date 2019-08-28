@@ -259,6 +259,12 @@ public class ShiroConfig {
         
         filterMap.put("/user/plogin", "anon");
         
+        filterMap.put("/hello", "anon");//测试多线程用
+        filterMap.put("/getTicket", "anon");//测试消息队列用
+        filterMap.put("/getTicket1", "anon");//测试消息队列用
+        filterMap.put("/getTicket2", "anon");//测试消息队列用
+        
+        
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilter.setLoginUrl("/login");
      	// 登录成功后要跳转的链接
