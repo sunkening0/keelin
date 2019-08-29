@@ -1,5 +1,4 @@
-package com.skn.keelin.rabbitmq.single.fanout;
-
+package com.skn.keelin.rabbitmq.topic;
 
 
 import java.io.UnsupportedEncodingException;
@@ -15,9 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class FanoutSmsConsumer2 {
-
-	@RabbitListener(queues = "fanout_sms_queue2")
+public class TopicConsumer {
+	@RabbitListener(queues = "topic_queue1")
 	@RabbitHandler
 	public void process(Message massage) throws UnsupportedEncodingException {
 		String id = massage.getMessageProperties().getMessageId();
@@ -26,6 +24,6 @@ public class FanoutSmsConsumer2 {
 		JSONObject jsonObject = JSONObject.parseObject(msg);
 		Integer filmID = jsonObject.getInteger("userID");
 		String nums = jsonObject.getString("phone");
-		log.info("消费队列2==filmID="+filmID+">>>>>>>>>>>>>>>>>>>>>>>> nums="+nums);
+		log.info("消费队列3==filmID="+filmID+">>>>>>>>>>>>>>>>>>>>>>>> nums="+nums);
 	}
 }

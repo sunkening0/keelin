@@ -1,4 +1,5 @@
-package com.skn.keelin.rabbitmq.single.topic;
+package com.skn.keelin.rabbitmq.topic;
+
 
 import java.util.Map;
 import java.util.UUID;

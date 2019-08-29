@@ -67,8 +67,7 @@ spring:
   
   #rabbitMQ
   rabbitmq:
-    host: 127.0.0.1
-    port: 5672
+    address: 127.0.0.1:5672 #配置集群 addresses:ip1:port1,ip2:port2,ip3:port3 
     username: admin
     password: admin
     virtual-host: /

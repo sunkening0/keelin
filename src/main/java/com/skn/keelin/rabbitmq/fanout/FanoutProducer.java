@@ -1,4 +1,5 @@
-package com.skn.keelin.rabbitmq.single.fanout;
+package com.skn.keelin.rabbitmq.fanout;
+
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

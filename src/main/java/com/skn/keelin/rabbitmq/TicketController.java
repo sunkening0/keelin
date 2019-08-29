@@ -1,4 +1,4 @@
-package com.skn.keelin.rabbitmq.single;
+package com.skn.keelin.rabbitmq;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,13 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.GetMapping; 
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.skn.keelin.rabbitmq.single.demo.ProduceService;
-import com.skn.keelin.rabbitmq.single.fanout.FanoutProducer;
-import com.skn.keelin.rabbitmq.single.topic.TopicProducer;
+import com.skn.keelin.rabbitmq.demo.ProduceService;
+import com.skn.keelin.rabbitmq.fanout.FanoutProducer;
+import com.skn.keelin.rabbitmq.topic.TopicProducer;
 
 import lombok.extern.slf4j.Slf4j;
 

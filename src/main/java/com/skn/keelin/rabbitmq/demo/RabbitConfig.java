@@ -1,4 +1,5 @@
-package com.skn.keelin.rabbitmq.single.demo;
+package com.skn.keelin.rabbitmq.demo;
+
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -44,6 +45,11 @@ public class RabbitConfig {
 		return rabbitTemplate;
 	}
 
+	/**
+	 * 作用：消息序列化  将对象直接转为json   rabbitmq默认的消息序列化方式是SimpleMessageConverter
+	 * MessageConverter中有两个方法  toMessage用于将消息序列化后发送到rabbitmq服务器  fromMessage用于消费端取消息并反序列化
+	 * @return
+	 */
 	@Bean
 	public Jackson2JsonMessageConverter converter() {
 		return new Jackson2JsonMessageConverter();

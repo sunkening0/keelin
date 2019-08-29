@@ -1,4 +1,4 @@
-package com.skn.keelin.rabbitmq.single;
+package com.skn.keelin.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

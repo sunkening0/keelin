@@ -1,9 +1,12 @@
-package com.skn.keelin.rabbitmq.single.demo;
+package com.skn.keelin.rabbitmq.demo;
+
 
 import java.io.IOException;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.Channel;
@@ -13,10 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class ConsumerService {
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
+	
+	
 	@RabbitListener(queues = RabbitConfig.MAIL_QUEUE_NAME)
 	public void consume(Message message, Channel channel) throws IOException {
+		Object object = rabbitTemplate.getMessageConverter().fromMessage(message);
 		//Mail mail = MessageHelper.msgToObj(message, Mail.class);
-		log.info("收到消息: {}", message.getBody());
+		log.info("收到消息: {}", object);
 		/*String msgId = mail.getMsgId();
 		MsgLog msgLog = msgLogService.selectByMsgId(msgId);
 		if (null == msgLog || msgLog.getStatus().equals(Constant.MsgLogStatus.CONSUMED_SUCCESS)) {// 消费幂等性
