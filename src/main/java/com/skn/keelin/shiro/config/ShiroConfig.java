@@ -23,6 +23,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,11 +37,9 @@ import com.skn.keelin.shiro.oauth2.realms.UserRealm;
 
 @Configuration
 public class ShiroConfig {
-	@Value("${spring.redis.host}")
-	private String host;
-	@Value("${spring.redis.port}")
-	private String port;
 	
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 	/**
 	 * 加密策略
 	 */
@@ -172,7 +171,7 @@ public class ShiroConfig {
 	
 	@Bean
 	public SecurityManager securityManager(UserRealm userRealm, PhoneRealm phoneRealm,
-			AbstractAuthenticator abstractAuthenticator,RedisTemplate<String, Object> redisTemplate) {
+			AbstractAuthenticator abstractAuthenticator) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 设置realms
 		List<Realm> realms = new ArrayList<Realm>();
@@ -263,7 +262,8 @@ public class ShiroConfig {
         filterMap.put("/getTicket", "anon");//测试消息队列用
         filterMap.put("/getTicket1", "anon");//测试消息队列用
         filterMap.put("/getTicket2", "anon");//测试消息队列用
-        
+        filterMap.put("/redis", "anon");//测试redis集群用
+        filterMap.put("/services/**", "anon");//测试webservice接口用
         
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilter.setLoginUrl("/login");
