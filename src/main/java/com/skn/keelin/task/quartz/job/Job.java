@@ -23,8 +23,6 @@ public class Job extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         // 获取参数
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-        // 业务逻辑 ...
-        log.info("------springbootquartzonejob执行"+jobDataMap.get("name").toString()+"###############"+jobExecutionContext.getTrigger());
-
-    }
+        log.info("定时任务执行中。。。参数："+jobDataMap.get("name").toString());
+    } 
 }
