@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,7 @@ import org.springframework.util.CollectionUtils;
 public final class RedisUtil {
 
 	@Autowired
+	@Qualifier(value="NewRedisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
 
 	// =============================common============================
@@ -161,6 +163,24 @@ public final class RedisUtil {
 		return redisTemplate.opsForValue().increment(key, delta);
 	}
 
+	/**
+	 * 
+	 * 递增
+	 * 
+	 * @param key   键
+	 * @param delta 要增加几(大于0)
+	 * @return
+	 * 
+	 */
+	public long incr(String key, long delta,long time) {
+		if (delta < 0) {
+			throw new RuntimeException("递增因子必须大于0");
+		}
+		long x = redisTemplate.opsForValue().increment(key, delta);
+		expire(key, time);
+		return x;
+	}
+	
 	/**
 	 * 
 	 * 递减

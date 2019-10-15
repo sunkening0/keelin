@@ -5,7 +5,7 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 
 public class WebserviceClient {
 	//webservice接口地址
-    private static String address = "http://localhost:8082/keelin/services/user?wsdl";
+    private static String address = "http://localhost:8083/keelin/services/user?wsdl";
 
     //测试
     public static void main(String[] args) {

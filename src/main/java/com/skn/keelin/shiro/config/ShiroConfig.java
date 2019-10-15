@@ -18,6 +18,7 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -178,7 +179,6 @@ public class ShiroConfig {
 		realms.add(userRealm);
 		realms.add(phoneRealm);
 		securityManager.setRealms(realms);
-		new EnterpriseCacheSessionDAO();
 		// 自定义缓存实现，可以使用redis
 		securityManager.setCacheManager(cacheManager(redisTemplate));
 		// 自定义session管理，可以使用redis
@@ -231,6 +231,7 @@ public class ShiroConfig {
         shiroFilter.setFilters(filters);
         filters.put("oauth2", new OAuth2Filter());
         filters.put("rememberMe", new RememberAuthenticationFilter());
+        //filters.put("logout", new SystemLogoutFilter());
         
         //过滤链定义，从上向下顺序执行  一般将/**放在最为下边 
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
@@ -258,7 +259,7 @@ public class ShiroConfig {
         
         filterMap.put("/user/plogin", "anon");
         
-        filterMap.put("/hello", "anon");//测试多线程用
+        filterMap.put("/hello", "authc");//测试多线程用
         filterMap.put("/getTicket", "anon");//测试消息队列用
         filterMap.put("/getTicket1", "anon");//测试消息队列用
         filterMap.put("/getTicket2", "anon");//测试消息队列用
@@ -271,7 +272,7 @@ public class ShiroConfig {
         shiroFilter.setSuccessUrl("/index");
      	// 未授权界面;
         shiroFilter.setUnauthorizedUrl("/403");  //自己写403页面
-
+        
         /**
          * 扩展shiro权限
          */
@@ -283,7 +284,7 @@ public class ShiroConfig {
         }*/
         //filterMap.put("/**", "oauth2");
         filterMap.put("/**", "rememberMe");
-        
+        filterMap.put("/logout", "logout");
         
         
         shiroFilter.setFilterChainDefinitionMap(filterMap);
@@ -291,4 +292,19 @@ public class ShiroConfig {
         return shiroFilter;
     }
 
+	
+	/**     
+	 * 
+	 * 开启shiro aop注解支持.     
+	 * 使用代理方式;所以需要开启代码支持;      
+	 * @param securityManager     
+	 * @return     
+	*/    
+	@Bean    
+	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {        
+		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();       
+		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);    
+		return authorizationAttributeSourceAdvisor; 
+	}
+	
 }

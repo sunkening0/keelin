@@ -40,9 +40,9 @@ public class RedisConfig {
 		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 
 		// key采用String的序列化方式
-		redisTemplate.setKeySerializer(stringRedisSerializer);
+		/*redisTemplate.setKeySerializer(stringRedisSerializer);
 		// hash的key也采用String的序列化方式
-		redisTemplate.setHashKeySerializer(stringRedisSerializer);
+		redisTemplate.setHashKeySerializer(stringRedisSerializer);*/
 		// valuevalue采用jackson序列化方式
 		/*redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
 		// hash的value采用jackson序列化方式
@@ -51,9 +51,29 @@ public class RedisConfig {
 		return redisTemplate;
 	}
 	
-	@Bean(name="stringRedisTemplate")
+	@Bean(name="NewRedisTemplate")
     @ConditionalOnMissingBean(StringRedisTemplate.class)  //此注解的作用  如果容器中没有RedisTemplate 那就注入    有就不注入了
-    public RedisTemplate<String, String> stringRedisTemplate(RedisConnectionFactory factory) {
-        return new StringRedisTemplate(factory);
+    public RedisTemplate<String,Object> stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+		redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+
+		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+
+		// key采用String的序列化方式
+		redisTemplate.setKeySerializer(stringRedisSerializer);
+		// hash的key也采用String的序列化方式
+		redisTemplate.setHashKeySerializer(stringRedisSerializer);
+		// valuevalue采用jackson序列化方式
+		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+		// hash的value采用jackson序列化方式
+		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+		redisTemplate.afterPropertiesSet();
+		return redisTemplate;
 	}
 }

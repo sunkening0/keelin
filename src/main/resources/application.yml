@@ -12,7 +12,7 @@ server:
     max-threads: 1000
     min-spare-threads: 30
   #tomcat启动的端口
-  port: 8082
+  port: 8083
   connection-timeout: 5000
   servlet:
     #tomcat访问路径，类似tomcat/webapps下的项目名称

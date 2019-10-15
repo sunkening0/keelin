@@ -10,6 +10,7 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.SerializationUtils;
 
 import com.skn.keelin.redis.RedisUtil;
 
@@ -43,7 +44,7 @@ public class ShiroRedisCache<K,V> implements Cache<K,V> {
         if (k == null) {
             return null;
         }
-        String bytes = getBytesKey(k);
+        byte[] bytes = getBytesKey(k);
         return (V)redisTemplate.opsForValue().get(bytes.toString());
 
     }
@@ -54,7 +55,7 @@ public class ShiroRedisCache<K,V> implements Cache<K,V> {
             return null;
         }
 
-        String bytes = getBytesKey(k);
+        byte[] bytes = getBytesKey(k);
         redisTemplate.opsForValue().set(bytes, v);
         return v;
     }
@@ -64,7 +65,7 @@ public class ShiroRedisCache<K,V> implements Cache<K,V> {
         if(k==null){
             return null;
         }
-        String bytes =getBytesKey(k);
+        byte[] bytes =getBytesKey(k);
         V v = (V)redisTemplate.opsForValue().get(bytes);
         redisTemplate.delete(bytes);
         return v;
@@ -102,17 +103,17 @@ public class ShiroRedisCache<K,V> implements Cache<K,V> {
         return values;
     }
 
-    private String getBytesKey(K key){
-        /*if(key instanceof String){
+    private byte[] getBytesKey(K key){
+        if(key instanceof String){
             String prekey = this.getPrefix() + key;
             return prekey.getBytes();
         }else {
-            return serializeu.serialize(key);
-        }*/
-    	if(key instanceof String){
+            return SerializationUtils.serialize(key);
+        }
+    	/*if(key instanceof String){
     		return (String)key;
     	}
-    	return null;
+    	return null;*/
     }
 
 }

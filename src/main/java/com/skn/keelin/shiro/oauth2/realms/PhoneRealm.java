@@ -26,13 +26,6 @@ public class PhoneRealm extends AuthorizingRealm {
 
         PhoneToken token = (PhoneToken) authenticationToken;
 
-        // 如果是PhoneToken，则强转，获取phone；否则不处理。
-        /*if(authenticationToken instanceof PhoneToken){
-            token = (PhoneToken) authenticationToken;
-        }else{
-            return null;
-        }*/
-
         String phone = (String) token.getPrincipal();
 
         User user = userService.selectByPhone(phone);

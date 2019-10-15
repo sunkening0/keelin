@@ -15,20 +15,6 @@ import java.io.IOException;
  * 自定义业务过滤器
  */
 public class OAuth2Filter extends AuthenticatingFilter {
-
-    @Override
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-        //获取请求token
-        String token = getRequestToken((HttpServletRequest) request);
-
-       /* if (StringUtils.isBlank(token)) {
-            return null;
-        }*/
-
-        //return new OAuth2Token(token);
-        return null;
-    }
-
     
 /*    isAccessAllowed方法和onAccessDenied方法，
     只要两者有一个可以就可以了，从名字中我们也可以理解，
@@ -96,6 +82,12 @@ public class OAuth2Filter extends AuthenticatingFilter {
 */
         return token;
     }
+
+	@Override
+	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

@@ -19,6 +19,8 @@ import com.skn.keelin.shiro.entity.BackAdminResult;
 import com.skn.keelin.shiro.entity.User;
 import com.skn.keelin.shiro.oauth2.token.PhoneToken;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RequestMapping("/user")
 @Controller
 public class UserController {
@@ -79,4 +81,16 @@ public class UserController {
     public String page_403(){
 		return "403";
     }
+	
+	@GetMapping("/logout")
+	public void logout() {
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+			if (log.isDebugEnabled()) {
+				log.debug("退出登录成功");
+			}
+		}
+	}
+
 }
