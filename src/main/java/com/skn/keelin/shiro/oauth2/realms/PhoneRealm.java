@@ -37,6 +37,7 @@ public class PhoneRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(user, phone, this.getName());
     }
 
+
     // 授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
