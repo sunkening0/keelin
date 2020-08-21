@@ -62,6 +62,20 @@ public class ShiroConfig {
 		UserRealm userRealm = new UserRealm();
 		userRealm.setCredentialsMatcher(credentialsMatcher);
 		// userRealm.setCacheManager(shiroCacheManager());
+
+		// 开启全局缓存
+		userRealm.setCachingEnabled(true);
+		// 开启认证缓存
+		userRealm.setAuthenticationCachingEnabled(true);
+		// 设置认证缓存管理的名字
+		userRealm.setAuthenticationCacheName("authenticationCache");
+		// 开启授权缓存管理
+		userRealm.setAuthorizationCachingEnabled(true);
+		// 设置授权缓存管理的名字
+		userRealm.setAuthorizationCacheName("authorizationCache");
+		// 开启缓存（realm中设置cachemanager和SecurityManager中设置是一样的）
+		//userRealm.setCacheManager(shiroCacheManager());
+
 		return userRealm;
 	}
 
