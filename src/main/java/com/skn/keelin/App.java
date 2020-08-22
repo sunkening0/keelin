@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Hello world!
  *
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.skn.keelin.redis", "com.skn.keelin.shiro"})
 public class App 
 {
     public static void main( String[] args )

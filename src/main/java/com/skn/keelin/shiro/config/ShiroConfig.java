@@ -98,7 +98,7 @@ public class ShiroConfig {
 		// 加入realms
 		List<Realm> realms = new ArrayList<Realm>();
 		realms.add(userRealm);
-		realms.add(phoneRealm);
+		//realms.add(phoneRealm);
 		authenticator.setRealms(realms);
 		return authenticator;
 	}

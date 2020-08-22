@@ -46,8 +46,6 @@ public class AppTest {
         Assert.assertTrue("数据一致", expectedResult.equals(content));
         Assert.assertFalse("数据不一致", !expectedResult.equals(content));*/
     }
-	
-	
-	@Test
+
 	
 }
