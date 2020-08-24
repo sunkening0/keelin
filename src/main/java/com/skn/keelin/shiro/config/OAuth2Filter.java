@@ -14,6 +14,9 @@ import java.io.IOException;
 /**
  * 自定义业务过滤器
  */
+/* * 自定义一个Filter，用来拦截所有的请求判断是否携带Token
+* * isAccessAllowed()判断是否携带了有效的JwtToken
+* * onAccessDenied()是没有携带JwtToken的时候进行账号密码登录，登录成功允许访问，登录失败拒绝访问 * */
 public class OAuth2Filter extends AuthenticatingFilter {
     
 /*    isAccessAllowed方法和onAccessDenied方法，
@@ -21,7 +24,8 @@ public class OAuth2Filter extends AuthenticatingFilter {
    逻辑是这样：先调用isAccessAllowed，如果返回的是true，则直接放行执行后面的filter和servlet，
    如果返回的是false，则继续执行后面的onAccessDenied方法，如果后面返回的是true则也可以有权限继续执行后面的filter和servelt。
     只有两个函数都返回false才会阻止后面的filter和servlet的执行。*/
-    
+    /* * 1. 返回true，shiro就直接允许访问url
+    * * 2. 返回false，shiro才会根据onAccessDenied的方法的返回值决定是否允许访问url * */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())) {
@@ -31,6 +35,9 @@ public class OAuth2Filter extends AuthenticatingFilter {
         return false;
     }
 
+    /**
+     * 返回结果为true表明登录通过
+     */
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token，如果token不存在，直接返回401
